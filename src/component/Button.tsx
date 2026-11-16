@@ -1,0 +1,37 @@
+import type { ComponentProps } from "react";
+import { twMerge } from "tailwind-merge";
+type variant = "primary" | "secondary" | " ghost-destructive";
+
+type ButtonProps = {
+  variant?: variant;
+} & ComponentProps<"button">;
+
+export function Button({
+  variant = "primary",
+  className,
+  ...props
+}: ButtonProps) {
+  return (
+    <button
+      {...props}
+      className={twMerge(
+        " transition-color rounded px-2 py-1 disabled:opacity  disabled:cursor-not-allowed ",
+        getVariantStyles(variant),
+        className,
+      )}
+    />
+  );
+}
+
+function getVariantStyles(variant: variant) {
+  switch (variant) {
+    case "primary":
+      return "bg-violet-600 hover:bg-violet-500";
+    case "secondary":
+      return " bg-zinc-700 hover:bg-zinc-600 text-zinc-400";
+    case " ghost-destructive":
+      return "hover:bg-red-800 text-red-800 hover:text-red-200";
+    default:
+      throw new Error(`invalid variant :${variant satisfies never}`);
+  }
+}
